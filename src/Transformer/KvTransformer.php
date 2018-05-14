@@ -2,9 +2,14 @@
 
 namespace Chrisyue\PhpM3u8\Transformer;
 
-class KvTransformer
+class KvTransformer extends AbstractTransformer
 {
-    public function transform($origin)
+    public function supports($origin)
+    {
+        return is_string($origin) && preg_match('/^[A-Z][A-Z0-9]*=[^=]+/', $origin);
+    }
+
+    protected function doTransform($origin)
     {
         preg_match_all('/(?<=^|,)[A-Z0-9-]+=("?).+?\1(?=,|$)/', $origin, $matches);
 

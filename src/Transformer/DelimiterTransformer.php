@@ -5,7 +5,7 @@ namespace Chrisyue\PhpM3u8\Transformer;
 /**
  * @Annotation
  */
-class DelimiterTransformer implements TransformerInterface
+class DelimiterTransformer extends AbstractTransformer
 {
     private $delimiter;
 
@@ -14,7 +14,12 @@ class DelimiterTransformer implements TransformerInterface
         $this->delimiter = $delimiter;
     }
 
-    public function transform($origin)
+    public function supports($origin)
+    {
+        return is_string($origin);
+    }
+
+    protected function doTransform($origin)
     {
         return explode($this->delimiter, $origin);
     }

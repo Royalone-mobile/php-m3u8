@@ -5,9 +5,14 @@ namespace Chrisyue\PhpM3u8\Transformer;
 /**
  * @Annotation
  */
-class BoolTransformer implements TransformerInterface
+class BoolTransformer extends AbstractTransformer
 {
-    public function transform($value)
+    public function supports($origin)
+    {
+        return is_string($origin) && empty($origin);
+    }
+
+    protected function doTransform($origin)
     {
         return true;
     }

@@ -8,7 +8,7 @@ use Chrisyue\PhpM3u8\Transformer\Factory\Annotation as TYPE;
 class MasterPlaylist extends AbstractPlaylist
 {
     /**
-     * @M3u8\StreamInf
+     * @M3u8\StreamInf(sequence=0)
      */
     public $streamInfs = [];
 
@@ -16,6 +16,7 @@ class MasterPlaylist extends AbstractPlaylist
      * @M3u8\Tag(
      *     name="#EXT-X-SESSION-KEY",
      *     repeatable=true,
+     *     sequence=0,
      *     type=@TYPE\AttrList(class="Chrisyue\PhpM3u8\Document\Rfc8216\Tag\Key")
      * )
      */

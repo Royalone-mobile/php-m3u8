@@ -11,6 +11,10 @@ use Chrisyue\PhpM3u8\Transformer\AttrTransformers;
 use Chrisyue\PhpM3u8\PropertyReader\PropertyReaderAwareInterface;
 use Chrisyue\PhpM3u8\PropertyReader\PropertyReaderInterface;
 use Chrisyue\PhpM3u8\PropertyReader\PropertyReaderAwareTrait;
+use Chrisyue\PhpM3u8\Transformer\AttrListReverser;
+use Chrisyue\PhpM3u8\DataAccessor\Factory;
+use Chrisyue\PhpM3u8\Transformer\AttrReversers;
+use Chrisyue\PhpM3u8\Transformer\KvReverser;
 
 /**
  * @Annotation
@@ -42,5 +46,15 @@ class AttrList implements FactoryInterface, PropertyReaderAwareInterface
 
     public function createReverser()
     {
+        $attrReversers = new AttrReversers();
+        foreach ($this->reader->read($this->class, FactoryInterface::class) as $key => $factory) {
+            $attrReversers->set($key, $factory->createReverser());
+        }
+
+        return new AttrListReverser(
+            new KvReverser(),
+            $attrReversers,
+            new Factory()
+        );
     }
 }

@@ -7,9 +7,14 @@ use Chrisyue\PhpM3u8\Document\Rfc8216\Tag\Inf;
 /**
  * @Annotation
  */
-class InfTransformer implements TransformerInterface
+class InfTransformer extends AbstractTransformer
 {
-    public function transform($origin)
+    public function supports($origin)
+    {
+        return is_string($origin) && preg_match('/^\d+(\.\d+)?,/');
+    }
+
+    protected function doTransform($origin)
     {
         $inf = new Inf();
         list($duration, $inf->title) = explode(',', $origin, 2);

@@ -52,4 +52,9 @@ class TagDumper implements ChildDumperInterface
     {
         return $this->sequence;
     }
+
+    public function getLines()
+    {
+        return $this->lines;
+    }
 }

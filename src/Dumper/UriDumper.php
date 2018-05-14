@@ -11,13 +11,10 @@ class UriDumper implements ChildDumperInterface
 
     private $sequence;
 
-    private $repeatable;
-
-    public function __construct(LinesInterface $lines, $sequence, $repeatable = false)
+    public function __construct(LinesInterface $lines, $sequence)
     {
         $this->lines = $lines;
         $this->sequence = $sequence;
-        $this->repeatable = $repeatable;
     }
 
     public function getSequence()
@@ -27,7 +24,7 @@ class UriDumper implements ChildDumperInterface
 
     public function isRepeatable()
     {
-        return $this->repeatable;
+        return false;
     }
 
     public function dump($uri)

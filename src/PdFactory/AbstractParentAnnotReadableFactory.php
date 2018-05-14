@@ -6,21 +6,20 @@ use Chrisyue\PhpM3u8\Parser\ParsersInterface;
 use Chrisyue\PhpM3u8\PropertyReader\PropertyReaderInterface;
 use Chrisyue\PhpM3u8\PropertyReader\PropertyReaderAwareInterface;
 use Chrisyue\PhpM3u8\PropertyReader\PropertyReaderAwareTrait;
+use Chrisyue\PhpM3u8\Line\LinesAwareInterface;
 
 abstract class AbstractParentAnnotReadableFactory implements PdFactoryInterface, PropertyReaderAwareInterface
 {
     use PropertyReaderAwareTrait;
 
-    public function initParsers(ParsersInterface $parsers, $class)
+    protected function iterateFactories($class, \closure $callback)
     {
         foreach ($this->reader->read($class, PdFactoryInterface::class) as $key => $factory) {
             if ($factory instanceof PropertyReaderAwareInterface) {
                 $factory->setReader($this->reader);
             }
 
-            $parsers->set($key, $factory->createParser());
+            $callback($key, $factory);
         }
-
-        return $parsers;
     }
 }

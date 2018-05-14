@@ -2,7 +2,7 @@
 
 namespace Chrisyue\PhpM3u8\Transformer;
 
-class AttrTransformer implements AttrTransformerInterface
+class AttrTransformer extends AbstractTransformer implements AttrTransformerInterface
 {
     private $attrName;
 
@@ -14,17 +14,30 @@ class AttrTransformer implements AttrTransformerInterface
         $this->valueTransformer = $valueTransformer;
     }
 
-    public function transform($origin)
+    public function supports($origin)
+    {
+        if (!is_string($origin)) {
+            return false;
+        }
+
+        if (null === $this->valueTransformer) {
+            return true;
+        }
+
+        return $this->valueTransformer->supports($origin);
+    }
+
+    public function supportsAttrName($attrName)
+    {
+        return $this->attrName === $attrName;
+    }
+
+    protected function doTransform($origin)
     {
         if (null === $this->valueTransformer) {
             return $origin;
         }
 
         return $this->valueTransformer->transform($origin);
-    }
-
-    public function supports($attrName)
-    {
-        return $this->attrName === $attrName;
     }
 }

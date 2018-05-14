@@ -21,7 +21,7 @@ class AttrTransformers implements AttrTransformersInterface
     public function getKeyByName($name)
     {
         foreach ($this->transformers as $key => $transformer) {
-            if ($transformer->supports($name)) {
+            if ($transformer->supportsAttrName($name)) {
                 return $key;
             }
         }

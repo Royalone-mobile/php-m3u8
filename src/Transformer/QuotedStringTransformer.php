@@ -5,9 +5,14 @@ namespace Chrisyue\PhpM3u8\Transformer;
 /**
  * @Annotation
  */
-class QuotedStringTransformer implements TransformerInterface
+class QuotedStringTransformer extends AbstractTransformer
 {
-    public function transform($origin)
+    public function supports($origin)
+    {
+        return is_string($origin) && preg_match('/^"[^"]+"$/', $origin);
+    }
+
+    protected function doTransform($origin)
     {
         return trim($origin, '"');
     }

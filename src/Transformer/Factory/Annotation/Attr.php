@@ -12,28 +12,36 @@ class Attr implements FactoryInterface
 {
     private $attrName;
 
-    private $trBuilder;
+    private $trFactory;
 
     public function __construct(array $options)
     {
         $this->attrName = $options['name'];
         if (isset($options['type'])) {
-            $this->trBuilder = $options['type'];
+            $this->trFactory = $options['type'];
         }
     }
 
     public function createTransformer()
     {
-        $transformer = null;
-        if (null !== $this->trBuilder) {
-            $transformer = $this->trBuilder->createTransformer();
-        }
-
-        return new AttrTransformer($this->attrName, $transformer);
+        return $this->create('Transformer');
     }
 
     public function createReverser()
     {
-        
+        return $this->create('Reverser');
+    }
+
+    private function create($type)
+    {
+        $tr = null;
+        if (null !== $this->trFactory) {
+            $method = sprintf('create%s', $type);
+            $tr = $this->trFactory->$method();
+        }
+
+        $class = sprintf('Chrisyue\PhpM3u8\Transformer\Attr%s', $type);
+
+        return new $class($this->attrName, $tr);
     }
 }
